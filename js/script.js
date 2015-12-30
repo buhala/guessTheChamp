@@ -29,7 +29,7 @@ $(function(){
 	function pickNewChampion(hasGuessed=true){
 		if(hasGuessed==false){
 			window.wrongChampions.push(window.currentChampion['name']+"-"+window.currentChampion["title"]);
-			$('#timer').html(parseInt($('#timer').html())-5);
+			$('#timer').html(parseInt($('#timer').html())-10);
 			
 		}
 		championChosen=Math.floor(Math.random()*_.size(window.champions));
