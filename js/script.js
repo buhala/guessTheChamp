@@ -29,7 +29,8 @@ $(function(){
 	function pickNewChampion(hasGuessed=true){
 		if(hasGuessed==false){
 			window.wrongChampions.push(window.currentChampion['name']+"-"+window.currentChampion["title"]);
-			console.log("hi");
+			$('#timer').html(parseInt($('#timer').html())-5);
+			
 		}
 		championChosen=Math.floor(Math.random()*_.size(window.champions));
 		window.currentChampion=window.champions[championChosen]; //black magics
@@ -43,7 +44,7 @@ $('#currentGuess').on('keyup',function(event){
 	if(window.timerId==-1){
 		 window.timerId=setInterval(function(){
 			 $('#timer').html(parseInt($('#timer').html())-1);
-			 if($('#timer').html()==0){
+			 if($('#timer').html()<=0){
 				 clearInterval(window.timerId);
 				 $('#currentGuess').prop('disabled',true);
 				 $('#results').css('display','inline-block');
