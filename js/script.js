@@ -7,9 +7,11 @@ $(function(){
 		$('#currentGuess').focus();
 		window.timerId=-1;
 		$('#timer').html('30');
+		$('#currentGuesses').html('0');
+		window.wrongChampions=[]
 	}
 	resetGame();
-	window.wrongChampions=[]
+	
     $('#restart').click(function(){
 		resetGame();
 	});
@@ -42,13 +44,23 @@ $(function(){
 	function pickNewChampion(hasGuessed){
 		if(hasGuessed==false){
 			window.wrongChampions.push(window.currentChampion['name']+"-"+window.currentChampion["title"]);
-			$('#timer').html(parseInt($('#timer').html())-10);
+			//$('#timer').html(parseInt($('#timer').html())-10);
 			
 		}
+		if($('#repeat').prop('checked')==false){
+			window.champions=_.without(window.champions,window.currentChampion);
+			console.log(_.size(window.champions));
+		}
+		if(_.size(window.champions)!=0){
 		championChosen=Math.floor(Math.random()*_.size(window.champions));
 		window.currentChampion=window.champions[championChosen]; //black magics
 		$('#champion-title').html(capitalizeFirstLetter(window.currentChampion['title']));
 		$('#currentGuess').val('');
+		}
+		else{
+			alert("You have guessed all the champions. Congrats!");
+			$('#timer').html('1');
+		}
 	}
 $('#currentGuess').on('keyup',function(event){
 	if(event.key=="Enter" || event.keyCode==13){
