@@ -1,5 +1,6 @@
 $(function(){
 	$('#currentGuess').val('');
+	window.wrongChampions=[]
     $('#currentGuess').prop('disabled',false);
 	$('#currentGuess').focus();
 	function capitalizeFirstLetter(string) {
@@ -9,7 +10,7 @@ $(function(){
 		return name.toLowerCase().replace(" ",'').replace("'","");
 	}
 	$('#skip').click(function(){
-		pickNewChampion();
+		pickNewChampion(false);
 		$('#currentGuess').focus();
 		
 	})
@@ -25,7 +26,11 @@ $(function(){
 		pickNewChampion();
 	});
 	
-	function pickNewChampion(){
+	function pickNewChampion(hasGuessed=true){
+		if(hasGuessed==false){
+			window.wrongChampions.push(window.currentChampion['name']+"-"+window.currentChampion["title"]);
+			console.log("hi");
+		}
 		championChosen=Math.floor(Math.random()*_.size(window.champions));
 		window.currentChampion=window.champions[championChosen]; //black magics
 		$('#champion-title').html(capitalizeFirstLetter(window.currentChampion['title']));
@@ -33,7 +38,7 @@ $(function(){
 	}
 $('#currentGuess').on('keyup',function(event){
 	if(event.key=="Enter"){
-		pickNewChampion();
+		pickNewChampion(false);
 	}
 	if(window.timerId==-1){
 		 window.timerId=setInterval(function(){
@@ -41,12 +46,15 @@ $('#currentGuess').on('keyup',function(event){
 			 if($('#timer').html()==0){
 				 clearInterval(window.timerId);
 				 $('#currentGuess').prop('disabled',true);
+				 $('#results').css('display','inline-block');
+				 $('#wrong-champs').html(window.wrongChampions.join("<br>"));
 			 }
 	},1000);
 	}
 		 if(dumbDownName($('#currentGuess').val())==dumbDownName(window.currentChampion['name'])){
 			 pickNewChampion();
-			 
+			 $('#timer').html(parseInt($('#timer').html())+5);
+
 			 $('#currentGuesses').html(parseInt($('#currentGuesses').html())+1);
 			 
 		 }
