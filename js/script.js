@@ -1,13 +1,26 @@
 $(function(){
-	$('#currentGuess').val('');
+	function resetGame(){
+		$('#currentGuess').val('');
+		$('#currentGuess').prop('disabled',false);
+		$('#results').css('display','none');
+		clearInterval(window.timerId);
+		$('#currentGuess').focus();
+		window.timerId=-1;
+		$('#timer').html('30');
+	}
+	resetGame();
 	window.wrongChampions=[]
-    $('#currentGuess').prop('disabled',false);
-	$('#currentGuess').focus();
+    $('#restart').click(function(){
+		resetGame();
+	});
+	$('#end').click(function(){
+		$('#timer').html('1');
+	});
 	function capitalizeFirstLetter(string) {
 		return string.charAt(0).toUpperCase() + string.slice(1);
 	}
 	function dumbDownName(name){
-		return name.toLowerCase().replace(" ",'').replace("'","");
+		return name.toLowerCase().replace(" ",'').replace("'","").replace(".",'');
 	}
 	$('#skip').click(function(){
 		pickNewChampion(false);
@@ -46,7 +59,7 @@ $('#currentGuess').on('keyup',function(event){
 		 window.timerId=setInterval(function(){
 			 $('#timer').html(parseInt($('#timer').html())-1);
 			 if($('#timer').html()<=0){
-				 window.wrongChampions.push(window.currentChampion['name']+"-"+window.currentChampion["title"]);
+				 window.wrongChampions.push(window.currentChampion['name']+"-"+window.currentChampion["title"]); 
 				 clearInterval(window.timerId);
 				 $('#currentGuess').prop('disabled',true);
 				 $('#results').css('display','inline-block');
