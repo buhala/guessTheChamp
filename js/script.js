@@ -44,7 +44,7 @@ $(function(){
 	function pickNewChampion(hasGuessed){
 		if(hasGuessed==false){
 			window.wrongChampions.push(window.currentChampion['name']+"-"+window.currentChampion["title"]);
-			//$('#timer').html(parseInt($('#timer').html())-10);
+			$('#timer').html(parseInt($('#timer').html())-10);
 			
 		}
 		if($('#repeat').prop('checked')==false){
