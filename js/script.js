@@ -54,7 +54,7 @@ $('#currentGuess').on('keyup',function(event){
 	}
 		 if(dumbDownName($('#currentGuess').val())==dumbDownName(window.currentChampion['name'])){
 			 pickNewChampion();
-			 $('#timer').html(parseInt($('#timer').html())+5);
+			 $('#timer').html(parseInt($('#timer').html())+2);
 
 			 $('#currentGuesses').html(parseInt($('#currentGuesses').html())+1);
 			 
