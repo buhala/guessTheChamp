@@ -71,7 +71,7 @@ $('#currentGuess').on('keyup',function(event){
 		 window.timerId=setInterval(function(){
 			 $('#timer').html(parseInt($('#timer').html())-1);
 			 if($('#timer').html()<=0){
-				 window.wrongChampions.push(window.currentChampion['name']+"-"+window.currentChampion["title"]); 
+				 window.wrongChampions.push(window.currentChampion['name']+" - "+window.currentChampion["title"]); 
 				 clearInterval(window.timerId);
 				 $('#currentGuess').prop('disabled',true);
 				 $('#results').css('display','inline-block');
