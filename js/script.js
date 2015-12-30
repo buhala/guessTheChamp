@@ -31,7 +31,10 @@ $(function(){
 		$('#champion-title').html(capitalizeFirstLetter(window.currentChampion['title']));
 		$('#currentGuess').val('');
 	}
-$('#currentGuess').on('keyup',function(){
+$('#currentGuess').on('keyup',function(event){
+	if(event.key=="Enter"){
+		pickNewChampion();
+	}
 	if(window.timerId==-1){
 		 window.timerId=setInterval(function(){
 			 $('#timer').html(parseInt($('#timer').html())-1);
