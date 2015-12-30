@@ -1,0 +1,15 @@
+#timer{
+	color:red;
+}
+#currentGuess{
+	display:inline-block;
+	max-width:300px;
+	
+}
+body{
+	text-align:center;
+}
+#champion-title{
+	font-weight:bold;
+	font-size:200%;
+}
