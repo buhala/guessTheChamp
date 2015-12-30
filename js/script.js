@@ -47,7 +47,7 @@ $('#currentGuess').on('keyup',function(){
 			 $('#currentGuesses').html(parseInt($('#currentGuesses').html())+1);
 			 
 		 }
-		 console.log($('#currentGuess').val()+"=="+dumbDownName(window.currentChampion['name']));
+		 //console.log($('#currentGuess').val()+"=="+dumbDownName(window.currentChampion['name']));
 	
 	
 });
