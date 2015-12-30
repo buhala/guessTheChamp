@@ -23,10 +23,10 @@ $(function(){
 			window.champions[count++]=ch;
 		}*/
 		window.champions=_.map(champs,function(data){return data;})
-		pickNewChampion();
+		pickNewChampion(true);
 	});
 	
-	function pickNewChampion(hasGuessed=true){
+	function pickNewChampion(hasGuessed){
 		if(hasGuessed==false){
 			window.wrongChampions.push(window.currentChampion['name']+"-"+window.currentChampion["title"]);
 			$('#timer').html(parseInt($('#timer').html())-10);
@@ -38,13 +38,15 @@ $(function(){
 		$('#currentGuess').val('');
 	}
 $('#currentGuess').on('keyup',function(event){
-	if(event.key=="Enter"){
+	if(event.key=="Enter" || event.keyCode==13){
 		pickNewChampion(false);
 	}
+	console.log(event);
 	if(window.timerId==-1){
 		 window.timerId=setInterval(function(){
 			 $('#timer').html(parseInt($('#timer').html())-1);
 			 if($('#timer').html()<=0){
+				 window.wrongChampions.push(window.currentChampion['name']+"-"+window.currentChampion["title"]);
 				 clearInterval(window.timerId);
 				 $('#currentGuess').prop('disabled',true);
 				 $('#results').css('display','inline-block');
@@ -53,9 +55,9 @@ $('#currentGuess').on('keyup',function(event){
 	},1000);
 	}
 		 if(dumbDownName($('#currentGuess').val())==dumbDownName(window.currentChampion['name'])){
-			 pickNewChampion();
+			 pickNewChampion(true);
 			 $('#timer').html(parseInt($('#timer').html())+2);
-
+			
 			 $('#currentGuesses').html(parseInt($('#currentGuesses').html())+1);
 			 
 		 }
