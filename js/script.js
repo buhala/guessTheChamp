@@ -1,4 +1,5 @@
 $(function(){
+	//Resets all values necessary so you can play again
 	function resetGame(){
 		$('#currentGuess').val('');
 		$('#currentGuess').prop('disabled',false);
@@ -10,75 +11,84 @@ $(function(){
 		$('#currentGuesses').html('0');
 		window.wrongChampions=[]
 	}
-	resetGame();
 	
-    $('#restart').click(function(){
-		resetGame();
-	});
-	$('#end').click(function(){
-		$('#timer').html('1');
-	});
-	function capitalizeFirstLetter(string) {
-		return string.charAt(0).toUpperCase() + string.slice(1);
-	}
+	//Makes typing the name easier for when we're comparing
 	function dumbDownName(name){
 		return name.toLowerCase().replace(" ",'').replace("'","").replace(".",'');
 	}
-	$('#skip').click(function(){
-		pickNewChampion(false);
-		$('#currentGuess').focus();
-		
-	})
-	window.timerId=-1;
-	$.get("champion.json",function(data){
-		champs=data['data'];
-		window.champions=[];
-		count=0;
-		/*for(ch in window.champs){
-			window.champions[count++]=ch;
-		}*/
-		window.champions=_.map(champs,function(data){return data;})
-		pickNewChampion(true);
-	});
 	
+	//Self explainitory
+	function capitalizeFirstLetter(string) {
+		return string.charAt(0).toUpperCase() + string.slice(1);
+	}
+	
+	//Picks a new champion for you to guess
 	function pickNewChampion(hasGuessed){
+		//reduces your timer by 10 if you've guessed it wrong and adds it to wrong champions llist
 		if(hasGuessed==false){
 			window.wrongChampions.push(window.currentChampion['name']+"-"+window.currentChampion["title"]);
 			$('#timer').html(parseInt($('#timer').html())-10);
 			
 		}
+		//Removes the champion from the pool of options if the user has enabled that
 		if($('#repeat').prop('checked')==false){
 			window.champions=_.without(window.champions,window.currentChampion);
 			console.log(_.size(window.champions));
 		}
+		//Picks new champion basically
 		if(_.size(window.champions)!=0){
-		championChosen=Math.floor(Math.random()*_.size(window.champions));
-		window.currentChampion=window.champions[championChosen]; //black magics
-		$('#champion-title').html(capitalizeFirstLetter(window.currentChampion['title']));
-		$('#currentGuess').val('');
+			championChosen=Math.floor(Math.random()*_.size(window.champions));
+			window.currentChampion=window.champions[championChosen]; //black magics
+			$('#champion-title').html(capitalizeFirstLetter(window.currentChampion['title']));
+			$('#currentGuess').val('');
 		}
+		//Win condition is having 0 champions left
 		else{
 			alert("You have guessed all the champions. Congrats!");
 			$('#timer').html('1');
 		}
 	}
-$('#currentGuess').on('keyup',function(event){
+	
+	//Restart button
+	$('#restart').click(function(){
+		resetGame();
+	});
+	
+	//End run button
+	$('#end').click(function(){
+		$('#timer').html('1');
+	});
+	
+	//Skip current champion button
+	$('#skip').click(function(){
+		pickNewChampion(false);
+		$('#currentGuess').focus();
+		
+	});
+	
+	//Handles keypresses in the text field
+	$('#currentGuess').on('keyup',function(event){
+	//Skips if you press enter
 	if(event.key=="Enter" || event.keyCode==13){
 		pickNewChampion(false);
 	}
-	console.log(event);
+	//Basically if the timer hasn't started as you're typing, start it
 	if(window.timerId==-1){
+		//Basic timing stuff
 		 window.timerId=setInterval(function(){
 			 $('#timer').html(parseInt($('#timer').html())-1);
 			 if($('#timer').html()<=0){
+				 //What to do when the timer is over
 				 window.wrongChampions.push(window.currentChampion['name']+" - "+window.currentChampion["title"]); 
 				 clearInterval(window.timerId);
 				 $('#currentGuess').prop('disabled',true);
 				 $('#results').css('display','inline-block');
 				 $('#wrong-champs').html(window.wrongChampions.join("<br>"));
+				 $('#timer').html('0');
 			 }
 	},1000);
 	}
+		//If your champion guess is correct
 		 if(dumbDownName($('#currentGuess').val())==dumbDownName(window.currentChampion['name'])){
 			 pickNewChampion(true);
 			 $('#timer').html(parseInt($('#timer').html())+2);
@@ -90,4 +100,19 @@ $('#currentGuess').on('keyup',function(event){
 	
 	
 });
+	resetGame();
+	//Gets data in
+	$.get("champion.json",function(data){
+		champs=data['data'];
+		window.champions=[];
+		count=0;
+		/*for(ch in window.champs){
+			window.champions[count++]=ch;
+		}*/
+		window.champions=_.map(champs,function(data){return data;})
+		pickNewChampion(true);
+	});
+	
+	
+
 });
