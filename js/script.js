@@ -117,6 +117,7 @@ $(function(){
 				 $('#results').css('display','inline-block');
 				 $('#wrong-champs').html(window.wrongChampions.join("<br>"));
 				 $('#timer').html('0');
+				 $('#skip').prop('disabled',true);
 			 }
 	},1000);
 	}
