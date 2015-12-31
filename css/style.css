@@ -16,3 +16,14 @@ body{
 #results{
 	display:none;
 }
+#options{
+	padding:10px;
+	display:block;
+	width:100%;
+}
+.pad{
+	padding-left:5px;
+}
+#diff{
+	padding:5px;
+}

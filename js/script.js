@@ -11,6 +11,36 @@ $(function(){
 		$('#currentGuesses').html('0');
 		window.wrongChampions=[]
 	}
+	//Sets the difficulty when stuff happens
+	function setDifficulty(){
+		diff=$('input[name=difficulty]:checked').val()
+		switch(diff){
+			case "0":
+				//console.log("ez");
+				window.timerStart=9999;
+				window.onCorrectGuess=9999;
+				window.onWrongGuess=0;
+				break;
+		case "1":
+				window.timerStart=60;
+				window.onCorrectGuess=10;
+				window.onWrongGuess=2;
+				break;
+		case "2":
+				window.timerStart=45;
+				window.onCorrectGuess=3;
+				window.onWrongGuess=5;
+				break;
+		case "3":
+				window.timerStart=30;
+				window.onCorrectGuess=2;
+				window.onWrongGuess=10;
+				break;
+		}
+		//console.log("help");
+		$('#timer').html(window.timerStart);
+		
+	}
 	
 	//Makes typing the name easier for when we're comparing
 	function dumbDownName(name){
@@ -27,7 +57,7 @@ $(function(){
 		//reduces your timer by 10 if you've guessed it wrong and adds it to wrong champions llist
 		if(hasGuessed==false){
 			window.wrongChampions.push(window.currentChampion['name']+"-"+window.currentChampion["title"]);
-			$('#timer').html(parseInt($('#timer').html())-10);
+			$('#timer').html(parseInt($('#timer').html())-window.onWrongGuess);
 			
 		}
 		//Removes the champion from the pool of options if the user has enabled that
@@ -65,7 +95,9 @@ $(function(){
 		$('#currentGuess').focus();
 		
 	});
-	
+	$('input[name=difficulty]').change(function(){
+		setDifficulty();
+	});
 	//Handles keypresses in the text field
 	$('#currentGuess').on('keyup',function(event){
 	//Skips if you press enter
@@ -91,7 +123,7 @@ $(function(){
 		//If your champion guess is correct
 		 if(dumbDownName($('#currentGuess').val())==dumbDownName(window.currentChampion['name'])){
 			 pickNewChampion(true);
-			 $('#timer').html(parseInt($('#timer').html())+2);
+			 $('#timer').html(parseInt($('#timer').html())+window.onCorrectGuess);
 			
 			 $('#currentGuesses').html(parseInt($('#currentGuesses').html())+1);
 			 
@@ -101,6 +133,7 @@ $(function(){
 	
 });
 	resetGame();
+	setDifficulty();
 	//Gets data in
 	$.get("champion.json",function(data){
 		champs=data['data'];
