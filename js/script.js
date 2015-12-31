@@ -8,6 +8,7 @@ $(function(){
 		$('#currentGuess').focus();
 		window.timerId=-1;
 		$('#timer').html('30');
+		 $('#skip').prop('disabled',false);
 		$('#currentGuesses').html('0');
 		window.wrongChampions=[]
 	}
