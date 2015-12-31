@@ -1,13 +1,23 @@
 $(function(){
 	//Resets all values necessary so you can play again
 	function resetGame(){
+		$.get("champion.json",function(data){
+		champs=data['data'];
+		window.champions=[];
+		count=0;
+		/*for(ch in window.champs){
+			window.champions[count++]=ch;
+		}*/
+		window.champions=_.map(champs,function(data){return data;})
+		pickNewChampion(true);
+	});
 		$('#currentGuess').val('');
 		$('#currentGuess').prop('disabled',false);
 		$('#results').css('display','none');
 		clearInterval(window.timerId);
 		$('#currentGuess').focus();
 		window.timerId=-1;
-		$('#timer').html('30');
+		$('#timer').html(window.timerStart);
 		 $('#skip').prop('disabled',false);
 		$('#currentGuesses').html('0');
 		window.wrongChampions=[]
@@ -137,16 +147,7 @@ $(function(){
 	resetGame();
 	setDifficulty();
 	//Gets data in
-	$.get("champion.json",function(data){
-		champs=data['data'];
-		window.champions=[];
-		count=0;
-		/*for(ch in window.champs){
-			window.champions[count++]=ch;
-		}*/
-		window.champions=_.map(champs,function(data){return data;})
-		pickNewChampion(true);
-	});
+	
 	
 	
 
